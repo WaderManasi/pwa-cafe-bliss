@@ -42,7 +42,7 @@ event.waitUntil(
     caches.keys().then(key => {
         console.log(key);       //goes through all our caches, look upon the keys
         return Promise.all(key
-        .filter(k => k!==staticCafeBliss)
+        .filter(k => k!==staticCafeBliss && k!==dynamicCache)
         .map(k => caches.delete(k))    
         )
     })
@@ -65,6 +65,8 @@ event.respondWith(
                 return fetRes
             })
         });
+    }).catch(()=>{
+        caches.match('/pages/fallback.html')
     })
 )
 })
