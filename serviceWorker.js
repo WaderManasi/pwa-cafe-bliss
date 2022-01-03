@@ -1,4 +1,5 @@
-const staticCafeBliss = 'cafe-bliss-site-static-v3';
+const staticCafeBliss = 'cafe-bliss-site-static-v5';
+const dynamicCache = 'cafe-bliss-site-dynamic-v1'
 const assets = [
    '/',
   '/index.html',
@@ -8,6 +9,7 @@ const assets = [
   '/css/styles.css',
   '/css/materialize.min.css',
   '/img/dish.png',
+  'https://fonts.gstatic.com/s/materialicons/v118/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2',
   'https://fonts.googleapis.com/icon?family=Material+Icons',
   'https://fonts.gstatic.com/s/materialicons/v47/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2'
 ];
@@ -57,8 +59,12 @@ self.addEventListener('fetch', event => {
 event.respondWith(
     caches.match(event.request).then(res => {
         // this res is eithr the one which matches the request(then return that resp), or diff(then return empty)
-        return res || fetch(event.request);
+        return res || fetch(event.request).then(fetRes => {
+            return caches.open(dynamicCache).then(cache => {
+                cache.put(event.request.url, fetRes.clone())
+                return fetRes
+            })
+        });
     })
 )
-
 })
