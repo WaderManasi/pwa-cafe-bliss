@@ -42,4 +42,13 @@ self.addEventListener('activate',event => {
 //fetch events
 self.addEventListener('fetch', event => {
 //    console.log('Fetch events beloe:', event);
+
+// fetch response from a catched resource
+event.respondWith(
+    caches.match(event.request).then(res => {
+        // this res is eithr the one which matches the request(then return that resp), or diff(then return empty)
+        return res || fetch(event.request);
+    })
+)
+
 })
