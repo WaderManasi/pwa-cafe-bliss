@@ -1,4 +1,4 @@
-const staticCafeBliss = 'cafe-bliss-site-static';
+const staticCafeBliss = 'cafe-bliss-site-static-v3';
 const assets = [
    '/',
   '/index.html',
@@ -36,6 +36,16 @@ self.addEventListener('install',evnt => {
 //activate service worker
 self.addEventListener('activate',event => {
 //    console.log('Service worker has been activated');
+event.waitUntil(
+    caches.keys().then(key => {
+        console.log(key);       //goes through all our caches, look upon the keys
+        return Promise.all(key
+        .filter(k => k!==staticCafeBliss)
+        .map(k => caches.delete(k))    
+        )
+    })
+)
+
 })
 
 
