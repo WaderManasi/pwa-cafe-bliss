@@ -66,7 +66,9 @@ event.respondWith(
             })
         });
     }).catch(()=>{
-        caches.match('/pages/fallback.html')
+                //below will return a int value
+        if(event.request.url.indexOf('.html')>-1)
+        return caches.match('/pages/fallback.html')
     })
 )
 })
