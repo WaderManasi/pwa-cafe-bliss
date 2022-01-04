@@ -1,5 +1,5 @@
-const staticCafeBliss = 'cafe-bliss-site-static-v5';
-const dynamicCache = 'cafe-bliss-site-dynamic-v1'
+const staticCafeBliss = 'cafe-bliss-site-static-v6';
+const dynamicCache = 'cafe-bliss-site-dynamic-v2';
 const assets = [
    '/',
   '/index.html',
