@@ -17,6 +17,19 @@ const assets = [
 //each items in above array represents the sep asset
 
 
+// cache size limit function
+const limitCacheSize = (namee,size) => {
+    caches.open(namee).then(cache => {
+        cache.keys().then(k=>{
+            if(k.length > size){
+                //delete previous stored from cache
+                cache.delete(k[0]).then(limitCacheSize(namee,size));
+            }
+        })
+    })
+}
+
+
 //****installing service worker
 self.addEventListener('install',evnt => {
 //    console.log('Service worker has been installed');
@@ -62,6 +75,8 @@ event.respondWith(
         return res || fetch(event.request).then(fetRes => {
             return caches.open(dynamicCache).then(cache => {
                 cache.put(event.request.url, fetRes.clone())
+                limitCacheSize(dynamicCache,3)
+                // it means currently, we cannot have more than 3 elements in dynamic cacjhe
                 return fetRes
             })
         });
