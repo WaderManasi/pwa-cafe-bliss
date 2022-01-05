@@ -1,4 +1,4 @@
-const staticCafeBliss = 'cafe-bliss-site-static-v6';
+const staticCafeBliss = 'cafe-bliss-site-static-v7';
 const dynamicCache = 'cafe-bliss-site-dynamic-v2';
 const assets = [
    '/',
@@ -69,21 +69,23 @@ self.addEventListener('fetch', event => {
 //    console.log('Fetch events beloe:', event);
 
 // fetch response from a catched resource
-event.respondWith(
-    caches.match(event.request).then(res => {
-        // this res is eithr the one which matches the request(then return that resp), or diff(then return empty)
-        return res || fetch(event.request).then(fetRes => {
-            return caches.open(dynamicCache).then(cache => {
-                cache.put(event.request.url, fetRes.clone())
-                limitCacheSize(dynamicCache,3)
-                // it means currently, we cannot have more than 3 elements in dynamic cacjhe
-                return fetRes
-            })
-        });
-    }).catch(()=>{
-                //below will return a int value
-        if(event.request.url.indexOf('.html')>-1)
-        return caches.match('/pages/fallback.html')
-    })
-)
+// event.respondWith(
+//     caches.match(event.request).then(res => {
+//         // this res is eithr the one which matches the request(then return that resp), or diff(then return empty)
+//         return res || fetch(event.request).then(fetRes => {
+//             return caches.open(dynamicCache).then(cache => {
+//                 cache.put(event.request.url, fetRes.clone())
+//                 limitCacheSize(dynamicCache,3)
+//                 // it means currently, we cannot have more than 3 elements in dynamic cacjhe
+//                 return fetRes
+//             })
+//         });
+//     }).catch(()=>{
+//                 //below will return a int value
+//         if(event.request.url.indexOf('.html')>-1)
+//         return caches.match('/pages/fallback.html')
+//     })
+// )
+
+
 })
